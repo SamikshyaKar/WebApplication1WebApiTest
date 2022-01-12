@@ -124,6 +124,54 @@ namespace WebApplication1WebApiTest.Controllers
 
         }
 
+        [HttpDelete("{id:int}")]
+
+        public async Task<ActionResult> DeleteEmployee(int id )
+        {
+            try
+            {
+                var EmptobeDeleted = await employeerepository.GetEmployeebyID(id);
+
+                if(EmptobeDeleted == null)
+                {
+                    return NotFound($" Employee with ID= {id} NOT Found");
+                }
+
+                 await employeerepository.DeleteEmployee(id);
+                  return Ok($"Employee with ID= {id} is DELETED");
+
+            }
+
+            catch(Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error in Deleting Employee");
+
+            }
+
+        }
+
+        [HttpGet("{Search}")]
+
+        public async Task<ActionResult<IEnumerable<Employee>>> Search (String Name, Gender ? gender)
+        {
+
+            try
+            {
+                var result = await employeerepository.SearchEmployee(Name, gender);
+                if ( result.Any())
+                {
+                    return Ok(result);
+                }
+
+                return NotFound();
+            }
+
+            catch(Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Employee Not Found");
+            }
+        }
+
 
     }
 }
