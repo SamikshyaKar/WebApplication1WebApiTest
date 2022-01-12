@@ -71,15 +71,54 @@ namespace WebApplication1WebApiTest.Controllers
                 {
                     return BadRequest();
                 }
+                var emp = await employeerepository.GetEmployeebyEmail(employee.Email);
+                if (emp != null)
+                {
+                    ModelState.AddModelError("Email", "Employee Email already in Use");
+                    return BadRequest(ModelState);
+                }
+
                 var CreateEmp = await employeerepository.AddEmployee(employee);
                 return CreatedAtAction(nameof(GetEmployeebyID), new { id = CreateEmp.EmployeeId }, CreateEmp);
 
+              
 
             }
             catch (Exception )
             {
 
                 return StatusCode(StatusCodes.Status500InternalServerError,"Error in Creating new Employee");
+            }
+
+
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<Employee>> UpdateEmployee (int id, Employee employee)
+        {
+            try
+            {
+                if(id != employee.EmployeeId)
+                {
+                    return BadRequest("Employee ID Mismatch");
+                }
+
+                var EmployeetobeUpdated = await employeerepository.GetEmployeebyID(id);
+
+                if (EmployeetobeUpdated== null)
+                {
+                    return NotFound($" Employee with ID = {id} Not Found");
+                }
+
+                var EmployeeUpdated = await employeerepository.UpdateEmployee(employee);
+
+                return EmployeeUpdated;
+            }
+
+            catch (Exception )
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error in Updating Employee");
+
             }
 
 
