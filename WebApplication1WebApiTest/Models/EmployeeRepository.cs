@@ -81,9 +81,9 @@ namespace WebApplication1WebApiTest.Models
                 result.LastName = employee.LastName;
                 result.Email = employee.Email;
                 result.Gender = employee.Gender;
-                result.PhotoPath = result.PhotoPath;
-                result.DateOfBrith = result.DateOfBrith;
-                result.DepartmentId = result.DepartmentId;
+                result.PhotoPath = employee.PhotoPath;
+                result.DateOfBrith = employee.DateOfBrith;
+                result.DepartmentId = employee.DepartmentId;
 
                 await appDBContext.SaveChangesAsync();
                 return result;
