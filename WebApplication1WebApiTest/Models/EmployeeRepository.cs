@@ -16,6 +16,10 @@ namespace WebApplication1WebApiTest.Models
         }
         public  async Task<Employee> AddEmployee(Employee employee)
         {
+            if(employee.Department !=null)
+            {
+                appDBContext.Entry(employee.Department).State = EntityState.Unchanged;
+            }
             var result = await appDBContext.Employeeprop.AddAsync(employee);
             await  appDBContext.SaveChangesAsync();
             return result.Entity;

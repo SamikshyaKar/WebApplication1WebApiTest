@@ -62,7 +62,28 @@ namespace WebApplication1WebApiTest.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<ActionResult<Employee>> CreateEmployee(Employee employee)
+        {
+            try
+            {
+                if(employee==null)
+                {
+                    return BadRequest();
+                }
+                var CreateEmp = await employeerepository.AddEmployee(employee);
+                return CreatedAtAction(nameof(GetEmployeebyID), new { id = CreateEmp.EmployeeId }, CreateEmp);
 
+
+            }
+            catch (Exception )
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,"Error in Creating new Employee");
+            }
+
+
+        }
 
 
     }

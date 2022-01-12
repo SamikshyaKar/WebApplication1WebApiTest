@@ -17,10 +17,5 @@ namespace WebApplication1WebApiTest.Models
 
         Task<Employee> AddEmployee(Employee employee);
         Task DeleteEmployee(int empID);
-
-
-
-
-
     }
 }
